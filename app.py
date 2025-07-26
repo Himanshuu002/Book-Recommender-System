@@ -2,11 +2,29 @@ import streamlit as st
 import pandas as pd
 import pickle
 from PIL import Image
+import os
+import requests
 
+
+# URL of your hosted pickle file
+URL = 'https://drive.google.com/file/d/1l4WAy3_rt_s1_0gMSOOHJr8z_a4XHdeB/view?usp=sharing'
+
+# Local path where the pickle file will be saved temporarily
+local_pickle_path = 'similarity.pkl'
+
+# Download the pickle file if it doesn't exist locally
+if not os.path.exists(local_pickle_path):
+    response = requests.get(URL)
+    with open(local_pickle_path, 'wb') as f:
+        f.write(response.content)
+
+# Now load the pickle file
+with open(local_pickle_path, 'rb') as f:
+    similarity = pickle.load(f)
 
 # load data
 books_df = pickle.load(open('books.pkl','rb'))
-similarity = pickle.load(open('similarity.pkl','rb'))
+
 
 #Recommend function
 def recommend(book_title):
