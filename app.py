@@ -11,22 +11,18 @@ URL = 'https://drive.google.com/uc?export=download&id=1l4WAy3_rt_s1_0gMSOOHJr8z_
 
 
 # Local path where the pickle file will be saved temporarily
+
+import gdown
+
+URL = "https://drive.google.com/uc?export=download&id=1l4WAy3_rt_s1_0gMSOOHJr8z_a4XHdeB"
 local_pickle_path = 'similarity.pkl'
 
-
-# Download the pickle file if it doesn't exist locally
 if not os.path.exists(local_pickle_path):
-    response = requests.get(URL)
-    if response.status_code == 200:
-        with open(local_pickle_path, 'wb') as f:
-            f.write(response.content)
-    else:
-        st.error(f"Failed to download pickle file. Status code: {response.status_code}")
+    gdown.download(URL, local_pickle_path, quiet=False)
 
-
-# Now load the pickle file
 with open(local_pickle_path, 'rb') as f:
     similarity = pickle.load(f)
+
 
 # load data
 books_df = pickle.load(open('books.pkl','rb'))
